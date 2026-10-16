@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+</head>
+<body>
+    <h1>Contact Form</h1>
+    <form id="contactForm">
+        <label>Name:</label><br>
+        <input type="text" id="name" required><br><br>
+        <label>Email:</label><br>
+        <input type="email" id="email" required><br><br>
+        <label>Message:</label><br>
+        <textarea id="message" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="response"></p>
+    <script>
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("name", document.getElementById("name").value);
+        formData.append("email", document.getElementById("email").value);
+        formData.append("message", document.getElementById("message").value);
+        fetch("http://localhost/submit.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("response").innerText = data.message;
+        })
+        .catch(err => {
+            document.getElementById("response").innerText = "Error submitting form";
+        });
+    });
+    </script>
+</body>
+</html>
